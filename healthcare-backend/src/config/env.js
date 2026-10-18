@@ -2,11 +2,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Quick sanity check for essential environment variables
-if (!process.env.JWT_SECRET) {
-  console.warn('WARNING: JWT_SECRET is not defined in .env! Using default fallback (unsafe for production).');
-}
-
 export const env = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   PORT: process.env.PORT || 5001,

@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { env } from '../config/env.js';
 
-// Verifies Bearer JWT token from Authorization header
 export const authenticate = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -16,7 +15,7 @@ export const authenticate = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, env.jwt.secret);
-    req.user = decoded; // { id, email }
+    req.user = decoded;
     next();
   } catch (err) {
     const message = err.name === 'TokenExpiredError' 

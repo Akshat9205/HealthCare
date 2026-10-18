@@ -16,7 +16,6 @@ import { authenticate } from '../middleware/authenticate.js';
 
 const router = Router();
 
-// Protect all patient endpoints with JWT
 router.use(authenticate);
 
 router.post('/', createPatientValidator, validate, createPatient);

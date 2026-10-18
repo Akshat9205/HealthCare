@@ -16,7 +16,6 @@ const server = app.listen(PORT, async () => {
   }
 });
 
-// Clean shutdown
 const shutdown = async (signal) => {
   console.log(`\nReceived ${signal}. Shutting down...`);
   server.close(async () => {

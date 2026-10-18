@@ -1,8 +1,6 @@
 import { query } from '../config/db.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 
-// POST /api/patients
-// Creates a new patient. created_by is always forced to req.user.id from JWT
 export const createPatient = asyncHandler(async (req, res) => {
   const { name, date_of_birth, gender, email, phone, address } = req.body;
   const userId = req.user.id;
@@ -32,8 +30,6 @@ export const createPatient = asyncHandler(async (req, res) => {
   });
 });
 
-// GET /api/patients
-// Lists all patients created by the logged-in user
 export const getPatients = asyncHandler(async (req, res) => {
   const userId = req.user.id;
 
@@ -52,8 +48,6 @@ export const getPatients = asyncHandler(async (req, res) => {
   });
 });
 
-// GET /api/patients/:id
-// Get a single patient. Returns 404 if not found or owned by someone else
 export const getPatientById = asyncHandler(async (req, res) => {
   const patientId = parseInt(req.params.id, 10);
   const userId = req.user.id;
@@ -78,8 +72,6 @@ export const getPatientById = asyncHandler(async (req, res) => {
   });
 });
 
-// PUT /api/patients/:id
-// Updates patient fields if owned by current user
 export const updatePatient = asyncHandler(async (req, res) => {
   const patientId = parseInt(req.params.id, 10);
   const userId = req.user.id;
@@ -135,8 +127,6 @@ export const updatePatient = asyncHandler(async (req, res) => {
   });
 });
 
-// DELETE /api/patients/:id
-// Deletes patient if owned by current user
 export const deletePatient = asyncHandler(async (req, res) => {
   const patientId = parseInt(req.params.id, 10);
   const userId = req.user.id;

@@ -2,14 +2,12 @@ import { body, param } from 'express-validator';
 
 const VALID_GENDERS = ['male', 'female', 'other', 'non-binary', 'prefer not to say'];
 
-// Validate :id param
 export const patientIdParam = [
   param('id')
     .isInt({ min: 1 }).withMessage('Patient ID must be a positive integer')
     .toInt(),
 ];
 
-// Validate patient creation body
 export const createPatientValidator = [
   body('name')
     .trim()
@@ -54,7 +52,6 @@ export const createPatientValidator = [
     .isLength({ max: 500 }).withMessage('Address cannot exceed 500 characters'),
 ];
 
-// Validate patient update body
 export const updatePatientValidator = [
   ...patientIdParam,
 

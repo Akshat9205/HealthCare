@@ -4,12 +4,10 @@ import { query } from '../config/db.js';
 import { env } from '../config/env.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 
-// POST /api/auth/register
 export const register = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
   const normalizedEmail = email.trim().toLowerCase();
 
-  // Check if email already registered
   const existing = await query(
     'SELECT id FROM users WHERE LOWER(email) = $1 LIMIT 1',
     [normalizedEmail]
@@ -22,11 +20,9 @@ export const register = asyncHandler(async (req, res) => {
     });
   }
 
-  // Hash password
   const salt = await bcrypt.genSalt(10);
   const passwordHash = await bcrypt.hash(password, salt);
 
-  // Save new user
   const result = await query(
     `INSERT INTO users (name, email, password_hash)
      VALUES ($1, $2, $3)
@@ -43,12 +39,10 @@ export const register = asyncHandler(async (req, res) => {
   });
 });
 
-// POST /api/auth/login
 export const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const normalizedEmail = email.trim().toLowerCase();
 
-  // Lookup user
   const result = await query(
     'SELECT id, name, email, password_hash, created_at FROM users WHERE LOWER(email) = $1 LIMIT 1',
     [normalizedEmail]
@@ -56,7 +50,6 @@ export const login = asyncHandler(async (req, res) => {
 
   const user = result.rows[0];
 
-  // Generic message for security so we don't leak user existence
   if (!user) {
     return res.status(401).json({
       success: false,
@@ -72,7 +65,6 @@ export const login = asyncHandler(async (req, res) => {
     });
   }
 
-  // Generate JWT token
   const token = jwt.sign(
     { id: user.id, email: user.email },
     env.jwt.secret,
@@ -94,7 +86,6 @@ export const login = asyncHandler(async (req, res) => {
   });
 });
 
-// GET /api/auth/me
 export const getMe = asyncHandler(async (req, res) => {
   const result = await query(
     'SELECT id, name, email, created_at, updated_at FROM users WHERE id = $1',

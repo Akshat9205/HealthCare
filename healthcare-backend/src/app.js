@@ -6,19 +6,21 @@ import { env } from './config/env.js';
 import { testConnection } from './config/db.js';
 import authRoutes from './routes/auth.routes.js';
 import patientRoutes from './routes/patient.routes.js';
+import doctorRoutes from './routes/doctor.routes.js';
+import mappingRoutes from './routes/mapping.routes.js';
 import { notFound } from './middleware/notFound.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
 
-// Security and basic middlewares
 app.use(helmet());
 app.use(cors({ origin: env.corsOrigin, credentials: true }));
-app.use(morgan('dev'));
+if (env.NODE_ENV !== 'test') {
+  app.use(morgan('dev'));
+}
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
-// Health check endpoint
 app.get('/api/health', async (req, res) => {
   try {
     await testConnection();
@@ -38,7 +40,6 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
-// Root welcome route
 app.get('/', (req, res) => {
   res.json({
     message: 'Healthcare Management API is running',
@@ -46,11 +47,11 @@ app.get('/', (req, res) => {
   });
 });
 
-// App Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/patients', patientRoutes);
+app.use('/api/doctors', doctorRoutes);
+app.use('/api/mappings', mappingRoutes);
 
-// Error handlers
 app.use(notFound);
 app.use(errorHandler);
 
