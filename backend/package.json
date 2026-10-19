@@ -1,5 +1,5 @@
 {
-  "name": "healthcare-backend",
+  "name": "backend",
   "version": "1.0.0",
   "description": "Healthcare Management Backend API",
   "main": "src/server.js",
