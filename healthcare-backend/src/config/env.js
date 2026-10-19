@@ -17,7 +17,7 @@ export const env = {
     secret: process.env.JWT_SECRET || 'supersecretjwtkey_1234567890',
     expiresIn: process.env.JWT_EXPIRES_IN || '24h',
   },
-  corsOrigin: process.env.CORS_ORIGIN || '*',
+  corsOrigin: process.env.CORS_ORIGIN && process.env.CORS_ORIGIN !== '*' ? process.env.CORS_ORIGIN : true,
 };
 
 export default env;
